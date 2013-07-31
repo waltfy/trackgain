@@ -1,0 +1,14 @@
+{
+  "name": "trackgain",
+  "version": "0.0.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "ember": "~1.0.0-rc.6",
+    "d3": "~3.2.7",
+    "rickshaw": "~1.3.0"
+  }
+}

@@ -16,9 +16,11 @@ module.exports = function(grunt) {
       // Order of library load is important!
       libs: {
         src: [
-          'assets/js/libs/jquery-1.9.1.js',
-          'assets/js/libs/handlebars-1.0.0-rc.4.js',
-          'assets/js/libs/ember-1.0.0-rc.6.js'
+          'bower_components/jquery/jquery.js',
+          'bower_components/handlebars/handlebars.js',
+          'bower_components/ember/ember.js',
+          'bower_components/d3/d3.js',
+          'bower_components/rickshaw/rickshaw.js'
         ],
         dest: 'assets/js/libs.js'
       }
@@ -50,16 +52,14 @@ module.exports = function(grunt) {
       libs: {
         files: ['assets/js/libs/*.js'],
         tasks: ['concat:libs', 'uglify:libs'],
-        // options: {
-        //   livereload: true
-        // }
       },
       app: {
         files: ['app/**/*.js'],
         tasks: ['concat:app', 'uglify:app'],
-        // options: {
-        //   livereload: true
-        // }
+      },
+      style: {
+        files: ['assets/css/*.styl'],
+        tasks: ['stylus']
       },
       livereload: {
         files: ['*.html', 'assets/css/*.css', 'assets/js/app.min.js', 'assets/js/libs.min.js'],
