@@ -1,31 +1,72 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <meta charset="utf-8">
-  <title>Ember Starter Kit</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+  <meta charset='utf-8'>
+  <title>TRACKGA.IN</title>
+    <link rel='stylesheet' href='assets/css/style.css'>
     <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
   </head>
   <body>
-
-    <script type="text/x-handlebars">
-      <h2>Trackga.in</h2>
-      <div id="chart"></div>
-      {{outlet}}
+    <script type='text/x-handlebars'>
+      <div class='trackgain'>
+        <header>
+          <h1>{{App.name}}</h1>
+          <span class='avatar'/>
+        </header>
+        <section class='app'>
+          <div class='options'>
+            {{view Ember.Select
+              contentBinding = 'App.availablePlots'
+              selectionBinding = 'App.availablePlots[0]'}}
+          </div>
+          <div class='graph' id='main_graph'></div>
+            <header>
+              <nav>
+                <ul>
+                  {{#linkTo index}}<li><h2>Track</h2></li>{{/linkTo}}
+                  {{#linkTo measure}}<li><h2>Measure</h2></li>{{/linkTo}}
+                </ul>
+              </nav>
+            </header>
+            <div class='content'>
+              {{outlet}}
+            </div>
+        </section>
+        <footer>
+          <small>2013 &copy; TRACKGA.IN</small>
+        </footer>
+      </div>
+    </script>
+    <script type='text/x-handlebars' data-template-name='index'>
+      <button class='btn--success invert'>+</button>
+      <table>
+        <thead>
+          <tr>
+            <th>Exercise</th>
+            <th class='center'>Weight kg</th>
+            <th class='center'>Repetitions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Bench Press</td>
+            <td class='center'>80</td>
+            <td class='center'>10</td>
+          </tr>
+          <tr>
+            <td>Squats</td>
+            <td class='center'>80</td>
+            <td class='center'>10</td>
+          </tr>
+        </tbody>
+    </table>  
     </script>
 
-    <script type="text/x-handlebars" data-template-name="index">
-      <ul>
-      {{#each item in model}}
-        <li>{{item}}</li>
-      {{/each}}
-      </ul>
+    <script type='text/x-handlebars' data-template-name='measure'>
+      <p>LOLOLOL</p> 
     </script>
-
-    
-    <script src="assets/js/libs.js"></script>
-    <script src="assets/js/app.js"></script>
-      
-    <script src="http://localhost:35729/livereload.js"></script>
+    <script src='assets/js/libs.js'></script>
+    <script src='assets/js/app.js'></script>
+    <script src='http://localhost:35729/livereload.js'></script>
   </body>
 </html>

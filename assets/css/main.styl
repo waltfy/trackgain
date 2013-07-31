@@ -1,14 +1,59 @@
+/*
 //=========================================
 //  _               _               _      
 // | |_ _ _ __ _ __| |____ _ __ _  (_)_ _  
 // |  _| '_/ _` / _| / / _` / _` |_| | ' \ 
 //  \__|_| \__,_\__|_\_\__, \__,_(_)_|_||_|
 //                     |___/               
-//=========================================
-
 //===================
 //  Styles Index
 //===================
+  1. Functions
+  2. Typography
+  3. Colors
+  4. Tags
+  5. Application
+*/
+
+//===================
+// 1. Functions
+//===================
+vendor(prop, args)
+  -webkit-{prop} args
+  -moz-{prop} args
+  -ms-{prop} args
+  -o-{prop} args
+  {prop} args
+
+border-radius()
+  vendor('border-radius', arguments)
+
+box-shadow()
+  vendor('box-shadow', arguments)
+
+background-image()
+  vendor('background-image', arguments)
+
+transform()
+  vendor(transform, arguments)
+
+transition(what=all, time=200ms, easeing=ease-in-out)
+  vendor(transition, what time easeing)
+
+animation()
+  vendor(animation, arguments)
+
+opacity(n)
+  opacity n
+  if support-for-ie
+    filter unquote('progid:DXImageTransform.Microsoft.Alpha(Opacity=' + round(n * 100) + ')')
+
+stripe(even = #fff, odd = lighten($detail, 90%))
+  tbody tr
+    &:nth-child(odd)
+      background-color odd
+    &:nth-child(even)
+      background-color even
 
 //===================
 //  Typograhpy
@@ -18,23 +63,192 @@ $type = 'Montserrat', helvetica, sans-serif;
 //===================
 //  Colors
 //===================
-$type_dark = hsl(0, 0%, 25%)
+$type_dark = hsl(232, 11%, 35%)
+$type_light = hsl(0, 0%, 100%)
 
+$detail = hsl(10, 85%, 68%)
+
+$standard = hsl(0, 0%, 40%)
+$primary = #5f9ad9
+$success = #93d06d
+$warning = #fabd4a
+$danger = #fc4349
+
+//===================
+//  Tags
+//===================
 * 
   box-sizing border-box
   -webkit-box-sizing border-box
   -moz-box-sizing border-box
-  // text-shadow: 0 1px 1px rgba(255,255,255,.3);
-  // -webkit-font-smoothing: antialiased;
-  // transform: translate3d(0, 0, 0)
-  font-weight 400
+  // text-shadow: 0 1px 1px rgba(150,150,150,.1);
+  font-weight normal
 
 body
   font-family $type
   color $type_dark
   margin 0
   padding 0
-  font-size 2em
+  font-size 1em
 
 h1, h2, h3, h4, h5
+  text-transform uppercase
   margin 0
+
+a
+  text-decoration none
+  color inherit
+
+nav ul
+  list-style none
+  padding 0
+  margin 0
+  li
+    float left
+    padding-right 2*0.625em
+    &:last-child
+      padding-right 0
+  a
+    float left
+    margin-right 2*0.625em
+    &.active
+      color $detail
+    &:last-child
+      margin-right 0
+table
+  border-collapse collapse
+  position relative
+  width 100%
+  stripe()
+  thead tr
+    border-bottom 0.125em solid lighten($type_dark, 60%)
+  thead th
+    font-weight bold
+    text-align left
+  tbody tr
+    transition()
+    &:hover
+      background-color lighten($detail, 50%)
+  td, th
+    padding 0.5em
+    line-height 1em
+    white-space nowrap
+  td.center, th.center
+    text-align center
+
+.btn
+  text-transform uppercase
+  display inline-block
+  vertical-align middle
+  position relative
+  border-radius 0.3em
+  padding 0.37em 0.7em
+  background-color lighten($standard, 40%)
+  line-height 1.75em
+  font-family $type
+  font-size 0.875em
+  border 0
+  word-wrap none
+  color white
+  text-decoration none
+  text-align center
+  margin 0
+  cursor pointer
+  transition()
+  i
+    font-size @font-size
+    margin-right 0.3125em
+  &.invert
+    color @background-color
+    background-color white
+    padding 0.1em 0.7em
+    border 0.3em solid @color
+  &:active
+    transform(scale(0.97))
+
+.btn--primary
+  @extends .btn
+  background-color $primary
+  &.invert
+    color @background-color
+    border 0.3em solid @color
+    &:hover
+      color white
+      background-color @background-color
+
+.btn--success
+  @extends .btn
+  background-color $success
+  &.invert
+    color @background-color
+    border 0.3em solid @color
+    &:hover
+      color white
+      background-color @background-color
+
+.btn--danger
+  @extends .btn
+  background-color $danger
+  &.invert
+    color @background-color
+    border 0.3em solid @color
+    &:hover
+      color white
+      background-color @background-color
+
+//===================
+//  Application
+//===================
+
+// Application container
+.trackgain
+  margin 0 auto
+  padding 0.625em 0
+  max-width 50em
+  border-top 0.625em solid $detail
+  header
+    padding 0 0.625em
+    width 100%
+    line-height 1.6em
+    position relative
+    h1
+      display inline-block
+    .avatar
+      position absolute
+      top 0
+      right 0.625em
+      height 7*0.625em
+      width @height
+      display inline-block
+      background url('../img/profile.png')
+      background-size @height - 0.625em
+      border-radius @height + 0.625em
+      border 0.5*0.625em solid darken($type_light, 10%)
+      transition()
+      &:hover
+        border 0.5*0.625em solid $detail
+  footer
+    padding 0 0.625em 0.625em
+    width 100%
+    color #ddd
+    text-align center
+    transition()
+    &:hover
+      color #555
+
+.app
+  color whiteSmoke
+  overflow hidden
+  padding 0.625em 0
+  header
+    width 100%
+    padding 0.652em 0.625em 0
+    display inline-block
+.content
+  border 1px solid whiteSmoke
+  padding 0.625em
+  color $type_dark
+  
+
+
+

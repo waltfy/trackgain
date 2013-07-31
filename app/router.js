@@ -1,9 +1,7 @@
 App = Ember.Application.create();
+App.name = 'Trackga.in';
+App.availablePlots = ['Bench Press', 'Squats'];
 
 App.Router.map(function() {
-  // put your routes here
-});
-
-App.IndexRoute = Ember.Route.extend({
-  
+  this.route('measure');
 });
