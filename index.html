@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <meta charset='utf-8'>
-  <title>TRACKGA.IN</title>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
+    <title>TRACKGA.IN</title>
     <link rel='stylesheet' href='assets/css/style.css'>
     <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
     <link href="bower_components/font-awesome/css/font-awesome.css" rel="stylesheet">
@@ -14,13 +15,13 @@
           <h1>{{App.name}}</h1>
           <span class='avatar'/>
         </header>
+        <div class='options'>
+          {{view Ember.Select
+            contentBinding = 'App.availablePlots'
+            selectionBinding = 'App.availablePlots[0]'}}
+        </div>
+        <div class='graph' id='main_graph'></div>
         <section class='app'>
-          <div class='options'>
-            {{view Ember.Select
-              contentBinding = 'App.availablePlots'
-              selectionBinding = 'App.availablePlots[0]'}}
-          </div>
-          <div class='graph' id='main_graph'></div>
             <header>
               <nav>
                 <ul>
@@ -33,10 +34,10 @@
               {{outlet}}
             </div>
         </section>
-        <footer>
-          <small>2013 &copy; TRACKGA.IN</small>
-        </footer>
       </div>
+      <footer>
+        <small>2013 &copy; TRACKGA.IN</small>
+      </footer>
     </script>
     <script type='text/x-handlebars' data-template-name='index'>
       <button class='btn--success invert'><i class='icon-plus'></i> Add Exercise</button>
@@ -69,5 +70,45 @@
     <script src='assets/js/libs.js'></script>
     <script src='assets/js/app.js'></script>
     <script src='http://localhost:35729/livereload.js'></script>
+    <script> 
+      $(document).ready(function () {
+        var graph = new Rickshaw.Graph( {
+            element: document.querySelector("#main_graph"), 
+            height: 160, 
+            series: [{
+                color: '#5f9ad9',
+                data: [ 
+                    { x: 0, y: 24 }, 
+                    { x: 1, y: 49 }, 
+                    { x: 2, y: 20 }, 
+                    { x: 3, y: 33 }, 
+                    { x: 4, y: 15 } ]
+            }]
+        });
+
+        graph.render();
+
+        var timeout = false;
+        var delta = 200;
+
+        window.onresize = function (ev) {
+          rtime = new Date();
+          if (timeout === false) {
+            timeout = true;
+            setTimeout(resizeend, delta);
+          }
+        }
+
+        function resizeend() {
+          if (new Date() - rtime < delta) {
+            setTimeout(resizeend, delta);
+          } else {
+            graph.render();
+            timeout = false;
+          }               
+        }
+         
+     });  
+    </script>
   </body>
 </html>

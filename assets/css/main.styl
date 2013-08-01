@@ -91,6 +91,7 @@ body
   margin 0
   padding 0
   font-size 1em
+  background-color #fafafa
 
 h1, h2, h3, h4, h5
   text-transform uppercase
@@ -204,11 +205,13 @@ table
 // Application container
 .trackgain
   margin 0 auto
-  padding 0.625em 0
+  padding 0.625em 0 0
   max-width 50em
   border-top 0.625em solid $detail
+  background-color white
+  box-shadow 0 5px 5px -7px lighten($type_dark, 15%)
   header
-    padding 0 0.625em
+    padding 0 0.625em 0.625em
     width 100%
     line-height 1.6em
     position relative
@@ -218,7 +221,7 @@ table
       position absolute
       top 0
       right 0.625em
-      height 7*0.625em
+      height 8*0.625em
       width @height
       display inline-block
       background url('../img/profile.png')
@@ -228,28 +231,31 @@ table
       transition()
       &:hover
         border 0.5*0.625em solid $primary
-  footer
-    padding 0 0.625em 0.625em
-    width 100%
-    color #ddd
-    text-align center
-    transition()
-    &:hover
-      color #555
+
+.graph
+  margin-top 5*0.625em
+  width 100%
 
 .app
   color whiteSmoke
+  border-left 1px solid #fafafa
+  border-right 1px solid #fafafa
   overflow hidden
-  padding 0.625em 0
+  padding 0 0.625em 0.625em
   header
     width 100%
     padding 0.652em 0.625em 0
     display inline-block
+
 .content
-  border 1px solid whiteSmoke
   padding 0.625em
   color $type_dark
   
-
-
-
+footer
+  padding 0.625em
+  width 100%
+  color #ddd
+  text-align center
+  transition()
+  &:hover
+    color #555
