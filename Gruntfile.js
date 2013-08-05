@@ -10,7 +10,13 @@ module.exports = function(grunt) {
         banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' + '<%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       app: {
-        src: ['app/**/*.js'],
+        src: ['app/router.js',
+              'app/adapters/*.js',
+              'app/controllers/*.js',
+              'app/helpers/*.js',
+              'app/models/*.js',
+              'app/routes/*.js',
+              'app/views/*.js'],
         dest: 'assets/js/app.js'
       },
       // Order of library load is important!
