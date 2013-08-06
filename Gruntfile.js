@@ -10,25 +10,34 @@ module.exports = function(grunt) {
         banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' + '<%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       app: {
-        src: ['app/router.js',
-              'app/adapters/*.js',
-              'app/controllers/*.js',
-              'app/helpers/*.js',
-              'app/models/*.js',
-              'app/routes/*.js',
-              'app/views/*.js'],
-        dest: 'assets/js/app.js'
+        src: ['src/router.js',
+              'src/adapters/*.js',
+              'src/controllers/*.js',
+              'src/helpers/*.js',
+              'src/models/*.js',
+              'src/routes/*.js',
+              'src/views/*.js'],
+        dest: 'dist/js/app.js'
       },
-      // Order of library load is important!
       libs: {
         src: [
-          'bower_components/jquery/jquery.js',
-          'bower_components/handlebars/handlebars.js',
-          'bower_components/ember/ember.js',
-          'bower_components/d3/d3.js',
-          'bower_components/rickshaw/rickshaw.js'
+          'src/bower_components/jquery/jquery.js',
+          'src/bower_components/handlebars/handlebars.js',
+          'src/bower_components/ember/ember.js',
+          'src/bower_components/d3/d3.js',
+          'src/bower_components/rickshaw/rickshaw.js'
         ],
-        dest: 'assets/js/libs.js'
+        dest: 'dist/js/libs.js'
+      }
+    },
+
+    copy: {
+      main: {
+        files: [
+          {expand: true, flatten: true, src: ['src/bower_components/font-awesome/css/*'], dest: 'dist/fonts/font-awesome/css/'},
+          {expand: true, flatten: true, src: ['src/bower_components/font-awesome/font/*'], dest: 'dist/fonts/font-awesome/font/'},
+          {expand: true, flatten: true, src: ['src/index.html'], dest: 'dist/'}
+        ]
       }
     },
 
@@ -37,38 +46,61 @@ module.exports = function(grunt) {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       app: {
-        src: 'assets/js/app.js',
-        dest: 'assets/js/app.min.js'
+        src: 'dist/js/app.js',
+        dest: 'dist/js/app.min.js'
       },
       libs: {
-        src: 'assets/js/libs.js',
-        dest: 'assets/js/libs.min.js'
+        src: 'dist/js/libs.js',
+        dest: 'dist/js/libs.min.js'
+      }
+    },
+
+    emberTemplates: {
+      compile: {
+        options: {
+          templateName: function(sourceFile) {
+            return sourceFile.replace(/src\/templates\//, '');
+          }
+        },
+        files: {
+          "dist/js/templates.js": "src/templates/**/*.hbs"
+        }
       }
     },
 
     stylus: {
       compile: {
         files: {
-          'assets/css/style.css': 'assets/css/*.styl'
+          'dist/css/style.css': 'dist/css/*.styl'
         }
       }
     },
 
     watch: {
       libs: {
-        files: ['assets/js/libs/*.js'],
-        tasks: ['concat:libs', 'uglify:libs'],
+        files: ['dist/js/libs/*.js'],
+        tasks: ['concat:libs'],
+        options: {
+          livereload: true
+        }
       },
       app: {
-        files: ['app/**/*.js'],
-        tasks: ['concat:app', 'uglify:app'],
+        files: ['src/**/*.js'],
+        tasks: ['concat:app'],
+        options: {
+          livereload: true
+        }
       },
       style: {
-        files: ['assets/css/*.styl'],
-        tasks: ['stylus']
+        files: ['dist/css/*.styl'],
+        tasks: ['stylus'],
+        options: {
+          livereload: true
+        }
       },
-      livereload: {
-        files: ['*.html', 'assets/css/*.css', 'assets/js/app.min.js', 'assets/js/libs.min.js'],
+      emberTemplates: {
+        files: ['src/templates/**/*.hbs'],
+        tasks: ['emberTemplates'],
         options: {
           livereload: true
         }
@@ -81,6 +113,6 @@ module.exports = function(grunt) {
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   // Default task.
-  grunt.registerTask('default', ['concat','uglify', 'stylus', 'watch']);
+  grunt.registerTask('default', ['concat', 'stylus', 'copy', 'emberTemplates']);
 
 };

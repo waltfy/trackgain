@@ -1,0 +1,40 @@
+<div class='trackgain'>
+  <header>
+    <h1>{{App.name}}</h1>
+    <span class='avatar' {{action showDropdown}}>
+    </span>
+    <div {{bindAttr class=':dropdown dropDownExtended:show_dropdown:hide_dropdown'}}>
+        <ul>
+          <li><i class='icon-user'></i>&nbsp; Edit Profile</li>
+          <li><i class='icon-cog'></i>&nbsp; Settings</li>
+          <li><i class='icon-download'></i>&nbsp; Download Stats</li>
+          <li><i class='icon-signout'></i>&nbsp; Logout</li>
+        </ul>
+      </div>
+  </header>
+  <div class='options'>
+    {{view Ember.Select
+      contentBinding = 'controller.availablePlots'
+      selectionBinding = 'controller.selectedPlot'}}
+  </div>
+  <div class='graph_container'>
+    <div id='legend'></div>
+    <div class='graph' id='main_graph'></div>
+  </div>
+  <section class='app'>
+      <header>
+        <nav>
+          <ul>
+            {{#linkTo index}}<li><h2>Track</h2></li>{{/linkTo}}
+            {{#linkTo measure}}<li><h2>Measure</h2></li>{{/linkTo}}
+          </ul>
+        </nav>
+      </header>
+      <div class='content'>
+        {{outlet}}
+      </div>
+  </section>
+</div>
+<footer>
+  <small>2013 &copy; TRACKGA.IN <i class='icon-twitter'></i></small>
+</footer>

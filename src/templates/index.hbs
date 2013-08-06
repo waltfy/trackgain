@@ -1,0 +1,45 @@
+<div class='row'>
+  <button class='btn--success invert' {{action newExercise}}><i class='icon-plus'></i> Add Exercise</button>
+</div>
+<div class='row'>
+  <small class='aid_info'>Select one of the table rows to update an exercise</small>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th>Exercise</th>
+      <th class='center'>Weight<sup>Kg</sup></th>
+      <th class='center'>Set<sup>reps</sup></th>
+      <th class='center'>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Bench Press</td>
+      <td class='center'>80</td>
+      <td class='center'>10</td>
+      <td class='center'>30</td>
+    </tr>
+    <tr>
+      <td>Squats</td>
+      <td class='center'>80</td>
+      <td class='center'>10</td>
+      <td class='center'>30</td>
+    </tr>
+  </tbody>
+</table>
+<div {{bindAttr class=':modal insertActive:show_modal:hide_modal'}}>
+<div class='modal_header'>
+  <h2>New Exercise</h2>
+</div>
+<div class='modal_content'>
+  <p>{{input valueBinding='newExercise_name' placeholder='Exercise Name'}}</p>
+  <p>{{input valueBinding='newExercise_weight' placeholder='Weight e.g. 75'}}</p>
+  <p>{{input valueBinding='newExercise_reps' placeholder='Repetitions e.g. 8'}}</p>
+</div>
+<div class='modal_actions'>
+    <a href="#" class='btn btn--success' {{action addExercise}}> <i class='icon-ok'></i> Add</a>
+    <a href="#" class='btn btn--danger' {{action cancel}}> <i class='icon-remove'></i> Cancel</a>
+</div>
+</div>
+<div class='modal_overlay'></div>
