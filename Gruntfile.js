@@ -36,6 +36,7 @@ module.exports = function(grunt) {
         files: [
           {expand: true, flatten: true, src: ['src/bower_components/font-awesome/css/*'], dest: 'dist/fonts/font-awesome/css/'},
           {expand: true, flatten: true, src: ['src/bower_components/font-awesome/font/*'], dest: 'dist/fonts/font-awesome/font/'},
+          {expand: true, flatten: true, src: ['src/images/*'], dest: 'dist/img/'},
           {expand: true, flatten: true, src: ['src/index.html'], dest: 'dist/'}
         ]
       }
@@ -71,7 +72,7 @@ module.exports = function(grunt) {
     stylus: {
       compile: {
         files: {
-          'dist/css/style.css': 'dist/css/*.styl'
+          'dist/css/style.css': 'src/styles/*.styl'
         }
       }
     },
