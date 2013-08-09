@@ -21,37 +21,43 @@ var User = new Schema({
   name: String,
 });
 
+// AvailableExercises Schema 
+var AvailableExercises = new Schema({
+  exercise: String,
+  region: String
+}, { collection : 'availableExercises' });
+
 // Exercise Schema 
 var Exercise = new Schema({
-  user_id: { type: ObjectId, required:true, ref: User },
-  name: String,
+  user_id: { type: ObjectId, required: true, ref: User },
+  av_exercise_id: { type: ObjectId, required: true, ref: AvailableExercises },
   weight: { type: Number, required: true },
   reps: { type: Number, required: true }
 });
 
-var ExerciseLog = new Schema({
-  exercise_id: { type: ObjectId, required: true, ref: Exercise },
-  weight: { type: Number },
-  reps: { type: Number }
-});
+// var ExerciseLog = new Schema({
+//   exercise_id: { type: ObjectId, required: true, ref: Exercise },
+//   weight: { type: Number },
+//   reps: { type: Number }
+// });
 
-// Measurement Schema 
-var Measurement = new Schema({
-  user_id: { type: ObjectId, ref: User },
-  muscle: String,
-  size: { type: Number, required: true }
-});
+// // Measurement Schema 
+// var Measurement = new Schema({
+//   user_id: { type: ObjectId, ref: User },
+//   muscle: String,
+//   size: { type: Number, required: true }
+// });
 
-var MeasurementLog = new Schema({
-  measurement_id: { type: ObjectId, required: true, ref: Measurement },
-  size: { type: Number, required: true }
-});
+// var MeasurementLog = new Schema({
+//   measurement_id: { type: ObjectId, required: true, ref: Measurement },
+//   size: { type: Number, required: true }
+// });
 
 //////////////////////////////////////////////////////////////////////////////////
 // Registering Automatic Timestamps for Models as required by: 'mongoose-simpletimestamps'
 //////////////////////////////////////////////////////////////////////////////////
-User.plugin(timestamps.SimpleTimestamps);
-// Exercise.plugin(SimpleTimestamps);
+User.plugin(SimpleTimestamps);
+Exercise.plugin(SimpleTimestamps);
 // Measurement.plugin(SimpleTimestamps);
 // ExerciseLog.plugin(SimpleTimestamps);
 // MeasurementLog.plugin(SimpleTimestamps);
@@ -61,9 +67,10 @@ User.plugin(timestamps.SimpleTimestamps);
 ////////////////////
 mongoose.model('User', User);
 mongoose.model('Exercise', Exercise);
-mongoose.model('ExerciseLog', ExerciseLog);
-mongoose.model('Measurement', Measurement);
-mongoose.model('MeasurementLog', MeasurementLog);
+// mongoose.model('ExerciseLog', ExerciseLog);
+// mongoose.model('Measurement', Measurement);
+// mongoose.model('MeasurementLog', MeasurementLog);
+mongoose.model('AvailableExercises', AvailableExercises);
 
 // Open connection.
 db.on('error', console.error.bind(console, 'connection error:'));

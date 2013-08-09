@@ -7,9 +7,10 @@ var casper = require('casper'),
 var mongoose = require('mongoose'),
     User     = mongoose.model('User'),
     Exercise = mongoose.model('Exercise'),
-    ExerciseLog = mongoose.model('ExerciseLog'),
-    Measurement = mongoose.model('Measurement'),
-    MeasurementLog = mongoose.model('MeasurementLog');
+    // ExerciseLog = mongoose.model('ExerciseLog'),
+    // Measurement = mongoose.model('Measurement'),
+    // MeasurementLog = mongoose.model('MeasurementLog'),
+    AvailableExercises = mongoose.model('AvailableExercises');
 
 function getQueryParams(requestUrl) {
   var url_parts = url.parse(requestUrl, true);
@@ -126,7 +127,7 @@ module.exports = function(app) {
     User.findOne({ _id: req.params.id }).exec( function (err, users, count) {
       if (err) return res.jsonp({ error: err });
       res.jsonp({
-        'users': users
+        'user': users
       });
     });
   });
@@ -174,10 +175,10 @@ module.exports = function(app) {
   // POST /exercises/:id
   app.post('/exercises', function (req, res) {
     var reqData = req.body.exercise;
-
+    console.log(reqData);
     var newExercise = new Exercise({ 
       user_id: reqData.user_id, 
-      name: reqData.name, 
+      av_exercise_id: reqData.exercise_id, 
       weight: reqData.weight,
       reps: reqData.reps
     });
@@ -199,8 +200,8 @@ module.exports = function(app) {
   
   });
 
-  // GET /exercises
-  // GET /exercises?user_id=:id
+  // GET exercises
+  // GET exercises?user_id=:id
   app.get('/exercises', function (req, res, next) {
     
     var query = getQueryParams(req.url);
@@ -224,8 +225,7 @@ module.exports = function(app) {
     };
   });
 
-  // GET /exercises
-  // GET /exercises?user_id=:id
+  // GET exercises?user_id=:id
   app.put('/exercises/:id', function (req, res, next) {
 
     var requestData = req.body.exercise;
@@ -252,8 +252,7 @@ module.exports = function(app) {
     });
   });
 
-  // GET /exercises
-  // GET /exercises?user_id=:id
+  // GET exercises?user_id=:id
   app.delete('/exercises/:id', function (req, res) {
     return Exercise.findById(req.params.id, function (err, exercise) {
       return exercise.remove(function (err) {
@@ -262,6 +261,17 @@ module.exports = function(app) {
         } else {
           console.log(err);
         }
+      });
+    });
+  });
+
+  // GET exercises/available
+  // Returns all of the exercises available on the database. Used to populate <select>.
+  app.get('/exercises/available', function (req, res) {
+    AvailableExercises.find().exec( function (err, availableExercises, count) {
+      if (err) return res.jsonp({ error: err });
+      res.jsonp({
+        'availableExercises': availableExercises
       });
     });
   });

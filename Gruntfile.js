@@ -24,6 +24,7 @@ module.exports = function(grunt) {
           'src/bower_components/jquery/jquery.js',
           'src/bower_components/handlebars/handlebars.js',
           'src/bower_components/ember/ember.js',
+          'src/bower_components/ember-data-shim/ember-data.js',
           'src/bower_components/d3/d3.js',
           'src/bower_components/rickshaw/rickshaw.js'
         ],
@@ -32,14 +33,27 @@ module.exports = function(grunt) {
     },
 
     copy: {
-      main: {
+      font: {
         files: [
-          {expand: true, flatten: true, src: ['src/bower_components/font-awesome/css/*'], dest: 'dist/fonts/font-awesome/css/'},
-          {expand: true, flatten: true, src: ['src/bower_components/font-awesome/font/*'], dest: 'dist/fonts/font-awesome/font/'},
-          {expand: true, flatten: true, src: ['src/images/*'], dest: 'dist/img/'},
-          {expand: true, flatten: true, src: ['src/index.html'], dest: 'dist/'}
+          {expand: true, cwd: 'src/bower_components/font-awesome', src: ['**'], dest: 'dist/fonts/font-awesome'},
+        ]
+      },
+      vendors: {
+        files: [
+          {expand: true, cwd: 'src/bower_components/select2', src: ['**'], dest: 'dist/js/vendors/select2'}
+        ]
+      },
+      html: {
+        files: [
+          {expand: true, cwd: 'src/', src: ['index.html'], dest: 'dist/'}
+        ]
+      },
+      images: {
+        files: [
+          {expand: true, cwd: 'src/images', src: ['**'], dest: 'dist/img/'}
         ]
       }
+
     },
 
     uglify: {
@@ -72,7 +86,7 @@ module.exports = function(grunt) {
     stylus: {
       compile: {
         files: {
-          'dist/css/style.css': 'src/styles/*.styl'
+          'dist/css/style.css': ['src/styles/*.styl']
         }
       }
     },
@@ -93,7 +107,7 @@ module.exports = function(grunt) {
         }
       },
       style: {
-        files: ['dist/css/*.styl'],
+        files: ['src/styles/*.styl'],
         tasks: ['stylus'],
         options: {
           livereload: true
@@ -102,6 +116,20 @@ module.exports = function(grunt) {
       emberTemplates: {
         files: ['src/templates/**/*.hbs'],
         tasks: ['emberTemplates'],
+        options: {
+          livereload: true
+        }
+      },
+      htmlTemplate: {
+        files: 'src/index.html',
+        tasks: ['copy:html'],
+        options: {
+          livereload: true
+        }
+      },
+      images: {
+        files: 'src/images/*',
+        tasks: ['copy:images'],
         options: {
           livereload: true
         }

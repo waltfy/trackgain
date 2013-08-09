@@ -95,7 +95,7 @@ body
   margin 0
   padding 0
   font-size 1em
-  background-color #fafafa
+  background-color #f0f0f0
 
 h1, h2, h3, h4, h5, p
   text-transform uppercase
@@ -146,13 +146,14 @@ input
 button
 select
 textarea 
+  max-width 100%
   font-family inherit
   font-size inherit
   line-height inherit
 
 input
+select
   font-family $type
-  // text-transform uppercase
   border-radius(2px)
   border 1px solid #ddd
   padding 0.625em
@@ -230,7 +231,7 @@ input
   max-width 50em
   border-top 0.625em solid $detail
   background-color white
-  box-shadow 0 5px 5px -7px lighten($type_dark, 15%)
+  box-shadow 0 5px 8px -6px lighten($type_dark, 15%)
   overflow visible
   header
     padding 0 0.625em 0.625em
@@ -316,6 +317,9 @@ footer
   .modal_content
     padding 0.652em
     text-align center
+    p
+      margin-top 0.5*0.625em
+      overflow visible
   .modal_actions
     width 100%
     overflow hidden
@@ -373,9 +377,9 @@ footer
         width 0.55em
         height 0.55em
         background $type_dark
-        -moz-transform:rotate(45deg);
-        -webkit-transform:rotate(45deg);
-        transform:rotate(45deg);
+        -moz-transform rotate(45deg)
+        -webkit-transform rotate(45deg)
+        transform rotate(45deg)
     .x_label
       color $type_dark
       transform translate(-50%, -100%)
@@ -438,9 +442,10 @@ footer
     background white
     border-left 1px solid #ccc
     border-top 1px solid #ccc
-    -moz-transform:rotate(45deg);
-    -webkit-transform:rotate(45deg);
-    transform:rotate(45deg);
+    border-radius(0.2em)
+    -moz-transform rotate(45deg)
+    -webkit-transform rotate(45deg)
+    transform rotate(45deg)
   ul
     margin 0.625em 0
     list-style none

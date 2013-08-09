@@ -5,14 +5,16 @@
     <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
     <title>TRACKGA.IN</title>
     <link rel='stylesheet' href='css/style.css'>
-    <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-    <link href="fonts/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Montserrat'>
+    <link rel='stylesheet' href="fonts/font-awesome/css/font-awesome.css">
+    <link rel='stylesheet' href="js/vendors/select2/select2.css">
   </head>
   <body>
     <script src='js/libs.js'></script>
     <script src='js/app.js'></script>
     <script src='js/templates.js'></script>
-    <script src='http://192.168.0.2:35729/livereload.js'></script>
+    <script src='js/vendors/select2/select2.js'></script>
+    <script src='http://localhost:35729/livereload.js'></script>
     <script> 
       $(document).ready(function () {
         var graph = new Rickshaw.Graph({
@@ -22,6 +24,7 @@
             series: [{
                 color: '#5f9ad9',
                 data: [ { x: 1375634145, y: 50 },
+                        { x: 1376600965, y: 20 },
                         { x: 1377621344, y: 90 }],
                 name: 'Weight'
             }]
@@ -45,7 +48,7 @@
         } );
 
         var xAxis = new Rickshaw.Graph.Axis.Time({
-          graph: graph,
+          graph: graph
         });
 
         xAxis.render();
