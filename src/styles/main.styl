@@ -142,6 +142,9 @@ table
   td.center, th.center
     text-align center
 
+:focus
+  outline-color $detail
+
 input
 button
 select
@@ -463,6 +466,26 @@ footer
 .show_dropdown
   visibility visible
   opacity 1
+
+.typeahead
+  position relative
+  .results
+    position absolute
+    background-color white
+    overflow scroll
+    max-height 100px
+    ul
+      margin 0
+      list-style none !important
+      padding 0
+    li
+      cursor pointer
+      padding 0.5*0.625em
+      transition()
+      &:hover
+        background-color lighten($type_dark, 80%)
+
+
 
 //===================
 // 6. Media Queries

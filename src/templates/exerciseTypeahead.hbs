@@ -1,0 +1,10 @@
+<div class='typeahead'>
+  <p>{{input valueBinding='exerciseName' placeholder='Exercise'}}</p>
+  <div {{bindAttr class=':results typeaheadResults:show:hide'}}>
+    <ul>
+      {{#each availableExercises}}
+        <li {{action selectExerciseName this}}>{{this.Exercise}}</li>
+      {{/each}}
+    </ul>
+  </div>
+</div>

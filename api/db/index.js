@@ -33,7 +33,7 @@ var Exercise = new Schema({
   av_exercise_id: { type: ObjectId, required: true, ref: AvailableExercises },
   weight: { type: Number, required: true },
   reps: { type: Number, required: true }
-});
+}, { collection: 'exercises' });
 
 // var ExerciseLog = new Schema({
 //   exercise_id: { type: ObjectId, required: true, ref: Exercise },

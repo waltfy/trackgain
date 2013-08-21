@@ -175,16 +175,21 @@ module.exports = function(app) {
   // POST /exercises/:id
   app.post('/exercises', function (req, res) {
     var reqData = req.body.exercise;
+    console.log("========= REQUEST =========");
     console.log(reqData);
+    
     var newExercise = new Exercise({ 
       user_id: reqData.user_id, 
-      av_exercise_id: reqData.exercise_id, 
+      av_exercise_id: reqData.av_exercise_id, 
       weight: reqData.weight,
       reps: reqData.reps
     });
-
+    console.log("========= OBJECT =========");
+    console.log(newExercise);
+    console.log("========= ERROR =========");
     newExercise.save(function (err) {
-      // if (err) return res.jsonp({ error: err });
+      console.log(err);
+      if (err) return res.jsonp({ error: err });
       res.jsonp({
         'exercise': newExercise
       });
@@ -268,7 +273,9 @@ module.exports = function(app) {
   // GET exercises/available
   // Returns all of the exercises available on the database. Used to populate <select>.
   app.get('/exercises/available', function (req, res) {
-    AvailableExercises.find().exec( function (err, availableExercises, count) {
+    var query = getQueryParams(req.url);
+    searchTerm = new RegExp(query.name);
+    AvailableExercises.find({Exercise: searchTerm}).exec( function (err, availableExercises) {
       if (err) return res.jsonp({ error: err });
       res.jsonp({
         'availableExercises': availableExercises

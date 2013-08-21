@@ -33,12 +33,7 @@
   <h2>New Exercise</h2>
 </div>
 <div class='modal_content'>
-  <p>{{view App.Select2View
-      placeholder='Select Exercise'
-      contentBinding='controller.availableExercises'
-      selectionBinding='controller.selectedNewExercise'
-      optionValuePath="content._id"
-      optionLabelPath="content.Exercise"}}</p>
+  {{view App.exerciseTypeaheadView}}
   <p>{{input valueBinding='newExercise_weight' placeholder='Weight e.g. 75'}}</p>
   <p>{{input valueBinding='newExercise_reps' placeholder='Repetitions e.g. 8'}}</p>
 </div>
