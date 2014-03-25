@@ -8,37 +8,92 @@ App.IndexController = Ember.ArrayController.extend({
   typeaheadResults: false,
   hasSelected: false,
 
+  getExerciseList: function (user) {
+    var _this = this;
+    return $.get('http://api.trackga.in/exercises?user='+user);
+  },
+
   newExercise: function () {
     this.set('insertActive', true);
   },
 
   cancel: function () {
     this.set('insertActive', false);
+    this.set('updateActive', false);
     this.set('newExercise_weight', null);
     this.set('newExercise_reps', null);
     this.set('exerciseName', null);
     this.set('hasSelected', false);
+    this.set('currentExercise', null);
+    this.set('currentExerciseName', null);
   },
 
   addExercise: function () {
     var reps = this.get('newExercise_reps'),
         weight = this.get('newExercise_weight'),
-        selectedExercise = this.get('selectedExercise');
+        selectedExercise = this.get('selectedExercise'),
+        _this = this;
 
     var requestData = {
-      user: App.User.find(App.currentUser),
+      user: App.currentUser,
       exercise_id: selectedExercise._id,
       weight: weight,
       reps: reps 
-    }
+    };
 
-    var newExercise = App.Exercise.createRecord(requestData);
-    newExercise.get('transaction').commit();
-    this.get('target.router').transitionTo('index');
+    $.post('http://api.trackga.in/exercises', requestData).done(function (data) {
+      _this.getExerciseList(App.currentUser).done(function (data) {
+        _this.set('exerciseList', data.exercises);
+        _this.cancel();
+      });
+    });
   },
 
-  updateExercise: function () {
-    console.log('should be updated');
+  updateExercise: function (exercise, name) {
+    this.set('updateActive', true);
+    this.set('currentExercise', exercise);
+    this.set('currentExerciseName', name);
+  },
+
+  saveExercise: function () {
+    var exercise = this.get('currentExercise'),
+        _this = this,
+        requestData = {
+          user: App.currentUser,
+          av_exercise_id: exercise.av_exercise_id._id,
+          id: exercise._id,
+          weight: exercise.weight,
+          reps: exercise.reps
+        };
+    
+    $.ajax({
+      url: "http://api.trackga.in/exercises/"+exercise._id,
+      data: requestData,
+      type: "PUT"
+    })
+      .done(function (data) {
+        _this.getExerciseList(App.currentUser).done(function (data) {
+          _this.set('exerciseList', data.exercises);
+          _this.cancel();
+        });
+      });
+  },
+
+  deleteExercise: function () {
+    var exercise = this.get('currentExercise'),
+        _this = this;
+    if (confirm('You sure you want to delete it boss?')) {
+      $.ajax({
+        type: "DELETE",
+        url: "http://api.trackga.in/exercises/"+exercise._id,
+      }).done(function (data) {
+          _this.getExerciseList(App.currentUser).done(function (data) {
+            _this.set('exerciseList', data.exercises);
+            _this.cancel();
+          });
+        });  
+    };
+    
   },
 
   exerciseTypeahead: function () {
@@ -47,18 +102,17 @@ App.IndexController = Ember.ArrayController.extend({
         hasSelected = this.get('hasSelected'),
         _this = this,
         getExercises = function () {
-          console.log(hasSelected);
           if (!hasSelected) {
             $.get('http://localhost:3000/exercises/available?name='+exerciseName).done(function (data) {
               var list = data.availableExercises;
               _this.set('availableExercises', list);
               _this.set('typeaheadResults', true);
-              console.log(list);
             });
           }
 
           if (exerciseName === '') {
             _this.set('hasSelected', false);
+            _this.set('typeaheadResults', false);
           }
         };
 

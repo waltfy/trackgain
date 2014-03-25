@@ -1,0 +1,26 @@
+<table>
+  <thead>
+    <tr>
+      <th>Exercise</th>
+      <th class='center'>Weight<sup>Kg</sup></th>
+      <th class='center'>Set<sup>reps</sup></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#if exerciseList}}
+      {{#each exercise in exerciseList}}
+        <tr {{action updateExercise exercise exercise.av_exercise_id.Exercise}}>
+          <td>{{exercise.av_exercise_id.Exercise}}</td>
+          <td class='center'>{{exercise.weight}}</td>
+          <td class='center'>{{exercise.reps}}</td>
+        </tr>
+      {{/each}}
+    {{else}}
+      <tr>
+        <td>No exercises available. Add some.</td>
+        <td></td>
+        <td></td>
+      </tr>
+    {{/if}}
+  </tbody>
+</table>

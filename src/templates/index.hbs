@@ -4,42 +4,33 @@
 <div class='row'>
   <small class='aid_info'>Select one of the table rows to update an exercise</small>
 </div>
-<table>
-  <thead>
-    <tr>
-      <th>Exercise</th>
-      <th class='center'>Weight<sup>Kg</sup></th>
-      <th class='center'>Set<sup>reps</sup></th>
-      <th class='center'>Total</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Bench Press</td>
-      <td class='center'>80</td>
-      <td class='center'>10</td>
-      <td class='center'>30</td>
-    </tr>
-    <tr>
-      <td>Squats</td>
-      <td class='center'>80</td>
-      <td class='center'>10</td>
-      <td class='center'>30</td>
-    </tr>
-  </tbody>
-</table>
+{{view App.TableRenderer controllerBinding=controller}}
 <div {{bindAttr class=':modal insertActive:show_modal:hide_modal'}}>
-<div class='modal_header'>
-  <h2>New Exercise</h2>
+  <div class='modal_header'>
+    <h2>New Exercise</h2>
+  </div>
+  <div class='modal_content'>
+    {{view App.exerciseTypeaheadView}}
+    <p>{{input type='number' valueBinding='newExercise_weight' placeholder='Weight e.g. 75'}}</p>
+    <p>{{input type='number' valueBinding='newExercise_reps' placeholder='Repetitions e.g. 8'}}</p>
+  </div>
+  <div class='modal_actions'>
+      <a href="#" class='btn btn--success' {{action addExercise}}> <i class='icon-ok'></i> Add</a>
+      <a href="#" class='btn btn--primary' {{action cancel}}> <i class='icon-remove'></i> Cancel</a>
+  </div>
 </div>
-<div class='modal_content'>
-  {{view App.exerciseTypeaheadView}}
-  <p>{{input valueBinding='newExercise_weight' placeholder='Weight e.g. 75'}}</p>
-  <p>{{input valueBinding='newExercise_reps' placeholder='Repetitions e.g. 8'}}</p>
-</div>
-<div class='modal_actions'>
-    <a href="#" class='btn btn--success' {{action addExercise}}> <i class='icon-ok'></i> Add</a>
-    <a href="#" class='btn btn--danger' {{action cancel}}> <i class='icon-remove'></i> Cancel</a>
-</div>
+<div {{bindAttr class=':modal updateActive:show_modal:hide_modal'}}>
+  <div class='modal_header'>
+    <h2>{{currentExerciseName}}</h2>
+  </div>
+  <div class='modal_content'>
+    <p>{{input type='number' valueBinding='currentExercise.weight' placeholder='Weight e.g. 75'}}</p>
+    <p>{{input type='number' valueBinding='currentExercise.reps' placeholder='Repetitions e.g. 8'}}</p>
+  </div>
+  <div class='modal_actions'>
+      <a href="#" class='btn btn--success' {{action saveExercise}}> <i class='icon-ok'></i> Add</a>
+      <a href="#" class='btn btn--primary' {{action cancel}}> <i class='icon-remove'></i> Cancel</a>
+      <a href="#" class='btn btn--danger' {{action deleteExercise}}> <i class='icon-trash'></i></a>
+  </div>
 </div>
 <div class='modal_overlay'></div>

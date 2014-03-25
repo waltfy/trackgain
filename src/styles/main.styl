@@ -317,6 +317,7 @@ footer
   .modal_header
     padding 0.652em 0.652em 0
     font-size 0.9em
+    text-align center
   .modal_content
     padding 0.652em
     text-align center
@@ -468,22 +469,32 @@ footer
   opacity 1
 
 .typeahead
+  display inline-block
   position relative
+  input
+    margin 0
   .results
+    border none
+    width 100%
     position absolute
     background-color white
     overflow scroll
     max-height 100px
+    z-index 1000
+    box-shadow 0 5px 8px -6px lighten($type_dark, 15%)
     ul
       margin 0
       list-style none !important
       padding 0
     li
+      &:nth-child(even)
+        background-color lighten($detail, 90%)
       cursor pointer
       padding 0.5*0.625em
+      font-size 0.9em
       transition()
       &:hover
-        background-color lighten($type_dark, 80%)
+        background-color lighten($detail, 50%)
 
 
 

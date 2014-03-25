@@ -17,10 +17,7 @@
       contentBinding = 'controller.availablePlots'
       selectionBinding = 'controller.selectedPlot'}}
   </div>
-  <div class='graph_container'>
-    <div id='legend'></div>
-    <div class='graph' id='main_graph'></div>
-  </div>
+  {{view GenericGraphRenderer sourceBinding='exerciseLog' graphType='area' graphName='trackGraph'}}
   <section class='app'>
       <header>
         <nav>

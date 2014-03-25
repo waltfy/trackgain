@@ -1,5 +1,5 @@
 <div class='typeahead'>
-  <p>{{input valueBinding='exerciseName' placeholder='Exercise'}}</p>
+  {{input valueBinding='exerciseName' placeholder='Exercise'}}
   <div {{bindAttr class=':results typeaheadResults:show:hide'}}>
     <ul>
       {{#each availableExercises}}

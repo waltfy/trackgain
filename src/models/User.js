@@ -10,4 +10,5 @@ App.User = DS.Model.extend({
 App.Adapter.map('App.User', {
   created_at: { key: 'createdAt' },
   updated_at: { key: 'updatedAt' },
+  exercises: {embedded: 'load'}
 });

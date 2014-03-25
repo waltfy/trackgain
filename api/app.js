@@ -12,10 +12,12 @@ var app = express();
 
 //CORS middleware
 var allowCrossDomain = function(req, res, next) {
+  res.header ('x-powered-by', 'api.trackga.in')
   res.header ('Access-Control-Allow-Origin', '*')
   res.header ('Access-Control-Allow-Credentials', true)
-  res.header ('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS')
+  res.header ('Access-Control-Allow-Methods', 'POST,GET,PUT,DELETE,OPTIONS')
   res.header ('Access-Control-Allow-Headers', 'Content-Type')
+  if (req.method == 'OPTIONS') res.send(200);
   next();
 }
 

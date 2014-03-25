@@ -3,21 +3,21 @@ var casper = require('casper'),
     bcrypt = require('bcrypt-nodejs'),
     url = require('url');
 
-// Require Database
+// Require mongoose
 var mongoose = require('mongoose'),
     User     = mongoose.model('User'),
     Exercise = mongoose.model('Exercise'),
-    // ExerciseLog = mongoose.model('ExerciseLog'),
-    // Measurement = mongoose.model('Measurement'),
-    // MeasurementLog = mongoose.model('MeasurementLog'),
+    ExerciseLog = mongoose.model('ExerciseLog'),
     AvailableExercises = mongoose.model('AvailableExercises');
 
+// Strip query parameters
 function getQueryParams(requestUrl) {
   var url_parts = url.parse(requestUrl, true);
   var query = url_parts.query;
   return query;
 };
 
+// Check wether obj is empty
 function isEmpty(obj) {
     if (obj == null) return true;
     if (obj.length && obj.length > 0) return false;
@@ -28,12 +28,10 @@ function isEmpty(obj) {
     return true;
 }
 
-// Export module 'api' 
+//====================
+// trackga.in API v.0.0-a
+//====================
 module.exports = function(app) {
-
-  //====================
-  // trackga.in API v.0.0-a by Walter Carvalho
-  //====================
 
   //====================
   // Authentication End-point
@@ -174,19 +172,15 @@ module.exports = function(app) {
 
   // POST /exercises/:id
   app.post('/exercises', function (req, res) {
-    var reqData = req.body.exercise;
-    console.log("========= REQUEST =========");
-    console.log(reqData);
-    
+    var reqData = req.body;
+
     var newExercise = new Exercise({ 
-      user_id: reqData.user_id, 
-      av_exercise_id: reqData.av_exercise_id, 
+      user_id: reqData.user, 
+      av_exercise_id: reqData.exercise_id, 
       weight: reqData.weight,
       reps: reqData.reps
     });
-    console.log("========= OBJECT =========");
-    console.log(newExercise);
-    console.log("========= ERROR =========");
+
     newExercise.save(function (err) {
       console.log(err);
       if (err) return res.jsonp({ error: err });
@@ -194,70 +188,63 @@ module.exports = function(app) {
         'exercise': newExercise
       });
     });
-
-    // var newExerciseLog = new ExerciseLog({ 
-    //   exercise_id: newExercise._id,
-    //   weight: newExercise.weight,
-    //   reps: newExercise.reps
-    // });
-
-    // newExerciseLog.save();
-  
   });
 
-  // GET exercises
-  // GET exercises?user_id=:id
-  app.get('/exercises', function (req, res, next) {
+  // GET exercises?user=:id
+  app.get('/exercises', function (req, res) {
     
     var query = getQueryParams(req.url);
+    if (isEmpty(query)) return;
 
-    if (isEmpty(query)) {
-      Exercise.find().exec( function (err, exercises, count) {
-        // if (this.err) return res.jsonp({ error: err });
+    Exercise
+      .find({user_id: query.user})
+      .populate('av_exercise_id', null, 'AvailableExercises')
+      .exec( function (err, exercises) {
+        if (exercises === undefined) res.jsonp({ 'exercises': [] });
         res.jsonp({
           'exercises': exercises
         });
       });
-    } 
-    
-    else {
-      Exercise.find({user_id: query.user_id}).exec( function (err, exercises, count) {
-        // if (this.err) return res.jsonp({ error: err });
-        res.jsonp({
-          'exercises': exercises
-        });
-      });
-    };
+
   });
 
-  // GET exercises?user_id=:id
   app.put('/exercises/:id', function (req, res, next) {
 
-    var requestData = req.body.exercise;
-
+    var requestData = req.body;
+    console.log(requestData);
+    
     var updateData = {
-      name: requestData.name,
+      id: requestData.id,
       weight: requestData.weight,
-      reps: requestData.reps
+      reps: requestData.reps,
     };
 
-    Exercise.findOne({_id: req.params.id}, function (err, exercise) {
+    var newExerciseLog = new ExerciseLog({ 
+      user_id: requestData.user,
+      av_exercise_id: requestData.av_exercise_id,
+      weight: requestData.weight,
+      reps: requestData.reps
+    });
+
+    console.log(newExerciseLog);
+
+    newExerciseLog.save();
+
+    Exercise.findOne({_id: updateData.id}, function (err, exercise) {
       if (err) return res.jsonp({ error: err });
 
-      if (updateData.name) { exercise.name = updateData.name };
       if (updateData.weight) { exercise.weight = updateData.weight };
       if (updateData.reps) { exercise.reps = updateData.reps };  
       
       exercise.save();
 
       res.jsonp({
-        users: exercise
+        exercise: exercise
       });
-
     });
   });
 
-  // GET exercises?user_id=:id
+  // DELETE exercises?user_id=:id
   app.delete('/exercises/:id', function (req, res) {
     return Exercise.findById(req.params.id, function (err, exercise) {
       return exercise.remove(function (err) {
@@ -268,6 +255,27 @@ module.exports = function(app) {
         }
       });
     });
+  });
+
+  //====================
+  // Exercise Log CRUD
+  //====================
+  
+  // GET log/exercises/:id?user=:id
+  app.get('/log/exercises/:id', function (req, res) {
+    
+    var query = getQueryParams(req.url);
+
+    if (isEmpty(query)) return;
+    ExerciseLog
+      .find({user_id: query.user, av_exercise_id: req.params.id})
+      .exec( function (err, exercises) {
+        // if (exercises === undefined) res.jsonp({ 'exercises': [] });
+        res.jsonp({
+          'exercises': exercises
+        });
+      });
+
   });
 
   // GET exercises/available

@@ -1,3 +1,3 @@
 App.exerciseTypeaheadView = Ember.View.extend({
-  templateName: 'exerciseTypeahead'  
+  templateName: 'partials/exerciseTypeahead'  
 });
